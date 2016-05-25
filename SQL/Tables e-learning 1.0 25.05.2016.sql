@@ -1,3 +1,5 @@
+CREATE DATABASE elearning;
+
 USE elearning;
 
 CREATE TABLE users
