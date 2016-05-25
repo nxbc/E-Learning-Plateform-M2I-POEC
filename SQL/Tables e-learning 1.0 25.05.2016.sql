@@ -1,3 +1,5 @@
+DROP DATABASE IF EXISTS elearning;
+
 CREATE DATABASE elearning;
 
 USE elearning;
@@ -6,7 +8,7 @@ CREATE TABLE users
 (
 id_user INT NOT NULL AUTO_INCREMENT,
 mail_user VARCHAR(100) NOT NULL,
-password_user VARCHAR(30) NOT NULL,
+password_user VARCHAR(255) NOT NULL,
 confirmed_user BOOLEAN DEFAULT FALSE,
 confirmed_key_user VARCHAR(100),
 PRIMARY KEY (id_user)
