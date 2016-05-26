@@ -24,8 +24,8 @@ public class ConnectionFormServlet extends HttpServlet {
        
 	private static final Logger LOGGER = Logger.getLogger(ConnectionFormServlet.class.getName());
 
-	@PersistenceUnit(unitName = "ElearningPU")
-	private EntityManagerFactory emf;
+	//@PersistenceUnit(unitName = "ElearningPU")
+	//private EntityManagerFactory emf;
 
 	@Resource
 	private UserTransaction utx;
