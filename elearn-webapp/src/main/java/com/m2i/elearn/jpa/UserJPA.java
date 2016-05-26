@@ -8,6 +8,12 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+/**
+ * 
+ * @author Seb
+ * Classe permettant l'accès a la table ELearning.users
+ * 
+ */
 @Entity
 @Table(name="users")
 @NamedQueries(value={

@@ -8,6 +8,7 @@
 <title>Users JPA</title>
 </head>
 <body>
+<h3>Test d'accès a la table ELearning.users</h3>
 	<table>
 		<thead>
 			<tr>

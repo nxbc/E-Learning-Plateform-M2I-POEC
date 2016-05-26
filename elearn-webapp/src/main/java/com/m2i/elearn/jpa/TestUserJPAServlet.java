@@ -17,6 +17,16 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class usersJPAServlet
  */
+/**
+ * * @author Seb
+ *	Servlet de Test, elle permet de controler l'acces à la table MySQL ELearning.Users en effectuant un select
+ *  sur les 10 premières lignes de cette table.
+ *  Ces lignes sont affichées via la jsp testuserjpa.jsp
+ *  
+ *  On accede a cette servlet de test par l'adresse "http://localhost:8080/elearn-webapp-0.1/testuserjpa" via le GET.
+ *  La methode POST n'est pas implementée car inutile. 
+ *
+ */
 @WebServlet("/testuserjpa")
 public class TestUserJPAServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
