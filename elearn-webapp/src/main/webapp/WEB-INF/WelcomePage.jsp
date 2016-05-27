@@ -14,17 +14,13 @@
 	<div id="Loggin">
 		<form  method="post">
 		
-		<a href="http://localhost:8080/elearn-webapp-0.1/welcome/connectionform"> <input type="button" value="Log In as Trainer" /></a>
+		<a href="http://localhost:8080/elearn-webapp-0.1/login"> <input type="button" value="Log In as Trainer" /></a>
 		
-		<a href="http://localhost:8080/elearn-webapp-0.1/welcome/connectionform"> <input type="button" value="Log In as Student" /></a>
+		<a href="http://localhost:8080/elearn-webapp-0.1/login"> <input type="button" value="Log In as Student" /></a>
     		
-<<<<<<< HEAD
-		<a href="http://localhost:8080/elearn-webapp-0.1/RegisterForm"><input type="button" value="Register" /></a>
-=======
-		<a href="http://localhost:8080/elearn-webapp-0.1/RegisterForm.jsp"><input type="button" value="Register as a Formateur" /></a>
+		<a href="http://localhost:8080/elearn-webapp-0.1/RegisterForm.jsp"><input type="button" value="Register as Trainer" /></a>
 		
-		<a href="http://localhost:8080/elearn-webapp-0.1/RegisterForm.jsp"><input type="button" value="Register as a Student" /></a>
->>>>>>> f4906f63f686c389d8e5e0ce22f3a6826a44c2fa
+		<a href="http://localhost:8080/elearn-webapp-0.1/RegisterForm.jsp"><input type="button" value="Register as Student" /></a>
 	
 		</form>
 		
