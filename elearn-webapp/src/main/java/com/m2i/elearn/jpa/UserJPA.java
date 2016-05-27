@@ -2,12 +2,20 @@ package com.m2i.elearn.jpa;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+/**
+ * 
+ * @author Seb
+ * Classe permettant l'accès a la table ELearning.users
+ * 
+ */
 @Entity
 @Table(name="users")
 @NamedQueries(value={
@@ -17,7 +25,7 @@ import javax.validation.constraints.NotNull;
 public class UserJPA {
 	
 	@Id
-	@NotNull
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id_user")
 	private Integer idUser;
 	

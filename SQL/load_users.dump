@@ -1,0 +1,2 @@
+INSERT into users (id_user, mail_user, password_user)
+VALUES (3, 'test@test.com', MD5('JO'));
