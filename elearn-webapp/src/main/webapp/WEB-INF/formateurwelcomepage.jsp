@@ -12,9 +12,9 @@
 <body>
 	<div id="Loggin">
 		<form  method="post">
-			<c:forEach items="${ users }" var="u">
-				<p>Bonjour "email du formateur" ${ u.mailUser }</p>
-			</c:forEach>
+			
+				<p>Bonjour <a href=""> mail ${ user.mailUser }</a></p>
+		
 			<a href="http://localhost:8080/elearn-webapp-0.1/welcome"> <input type="button" value="Log Out" /></a>
 		</form>
 		
