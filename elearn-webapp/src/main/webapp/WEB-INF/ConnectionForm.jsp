@@ -16,10 +16,10 @@
     <legend> Accéder à Mon Compte : </legend>
 	     
 	<label for="mail_user"> Username :</label>
-	<input id="mailUser" type="text" name="mailUser"/>
+	<input id="mailUser" type="text" name="mailUser" />
 	<br><br>
 	<label for="password_user">Password :</label>
-	<input id="passwordUser" type="text" name="aPassword"/>	
+	<input id="passwordUser" type="password" name="passwordUser"/>	
 	<br><br>
 	<input type="submit" value="Sign In" />
 	</fieldset>
