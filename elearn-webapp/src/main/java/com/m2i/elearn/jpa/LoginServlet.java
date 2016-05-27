@@ -45,14 +45,13 @@ public class LoginServlet extends HttpServlet {
 		
 		EntityManager em = emf.createEntityManager();
 		
-		String id = request.getParameter("mailUser");
-		String password = request.getParameter("passwordUser");
+		String mailUser = request.getParameter("mailUser");
+		String passwordUser = request.getParameter("passwordUser");
 		
-		TypedQuery<UserJPA> query = 
-				em.createNamedQuery("SELECT * FROM users WHERE mail_user ' "+id+"' AND password_user '"+password+"'", UserJPA.class)
-				.setParameter("i",id)
-				.setParameter("password",password);
-		List<UserJPA> user = query.getResultList();
+		UserJPA user = 
+				em.createQuery("SELECT u FROM UserJPA u WHERE u.mailUser = :mailUser AND u.passwordUser= :passwordUser", UserJPA.class)
+				.setParameter("mailUser", mailUser).setParameter("passwordUser",passwordUser).getSingleResult();
+				
 		LOGGER.info(String.format("Received User=%s", user));
 	/*
         if (user != null) {
