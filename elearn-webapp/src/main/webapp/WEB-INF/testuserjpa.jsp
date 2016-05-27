@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; UTF-8"
+﻿<%@ page language="java" contentType="text/html; UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>    
 <!DOCTYPE html>
@@ -8,6 +8,7 @@
 <title>Users JPA</title>
 </head>
 <body>
+<h3>Test d'accès a la table ELearning.users</h3>
 	<table border="1">
 		<thead>
 			<tr>

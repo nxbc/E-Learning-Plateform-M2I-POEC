@@ -33,11 +33,13 @@ public class ConnectionFormServlet extends HttpServlet {
        
 	private static final Logger LOGGER = Logger.getLogger(ConnectionFormServlet.class.getName());
 
+
 	
 	//private static final String FIND_USER_BY_MAIL_NO_AND_PASSWORD = "SELECT * FROM user_info WHERE mail_user = ? AND password_user = ?";
 	
 	@PersistenceUnit(unitName = "ELearningPU")
 	private EntityManagerFactory emf;
+
 
 	@Resource
 	private UserTransaction utx;
