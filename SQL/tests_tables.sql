@@ -66,7 +66,7 @@ FROM chapters, courses
 WHERE chapters.id_course = courses.id_course
 AND chapters.id_course = 2;
 
-
+SELECT * FROM user_info WHERE mail_user = ? AND password_user = ?;
 
 # Add lecture with long text with the id of the chapter
 INSERT into lectures (id_chapter, num_lecture, txt_lecture)

@@ -49,3 +49,8 @@ txt_lecture TEXT,
 PRIMARY KEY (id_lecture),
 FOREIGN KEY (id_chapter) REFERENCES chapters(id_chapter)
 );
+
+SELECT 'LOADING users' as 'INFO';
+source load_users.dump ;
+
+source show_elapsed.sql ;
