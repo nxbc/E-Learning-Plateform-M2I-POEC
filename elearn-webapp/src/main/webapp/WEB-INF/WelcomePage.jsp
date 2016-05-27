@@ -18,7 +18,7 @@
 		
 		<a href="http://localhost:8080/elearn-webapp-0.1/welcome/connectionform"> <input type="button" value="Log In as Student" /></a>
     		
-		<a href="http://localhost:8080/elearn-webapp-0.1/RegisterForm.jsp"><input type="button" value="Register" /></a>
+		<a href="http://localhost:8080/elearn-webapp-0.1/RegisterForm"><input type="button" value="Register" /></a>
 	
 		</form>
 		

@@ -14,13 +14,13 @@
 			<fieldset>
 			<legend><h2>Inscription Formateur</h2></legend>
 			<label for="User">User</label>
-			<input id="user" type="text" name="mail_user">
-			<span class="erreur">${erreurs['mail_user']}</span>
+			<input id="mailUser" type="text" name="mailUser">
+			<span class="erreur">${erreurs['mailUser']}</span>
 			<BR><BR>
 			
 			<label for="Password">Password</label>
-			<input id="password" type="text" name="password">
-			<span class="erreur">${erreurs['password']}</span>
+			<input id="passwordUser" type="text" name="passwordUser">
+			<span class="erreur">${erreurs['passwordUser']}</span>
 			<BR><BR>
 			
 			<INPUT type=submit value=Valider>

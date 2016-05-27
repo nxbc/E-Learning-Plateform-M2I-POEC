@@ -1,14 +1,9 @@
 package com.m2i.elearn.register;
 
-import static org.junit.Assert.*;
+import junit.framework.TestCase;
 
-import org.junit.Test;
-
-public class RegisterFormJUnit {
-
-	@Test
-	public void test() {
-		fail("Not yet implemented");
-	}
+public class RegisterFormJUnit extends TestCase {
+	
+	
 
 }
