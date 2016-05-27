@@ -18,7 +18,13 @@
 		
 		<a href="http://localhost:8080/elearn-webapp-0.1/welcome/connectionform"> <input type="button" value="Log In as Student" /></a>
     		
+<<<<<<< HEAD
 		<a href="http://localhost:8080/elearn-webapp-0.1/RegisterForm"><input type="button" value="Register" /></a>
+=======
+		<a href="http://localhost:8080/elearn-webapp-0.1/RegisterForm.jsp"><input type="button" value="Register as a Formateur" /></a>
+		
+		<a href="http://localhost:8080/elearn-webapp-0.1/RegisterForm.jsp"><input type="button" value="Register as a Student" /></a>
+>>>>>>> f4906f63f686c389d8e5e0ce22f3a6826a44c2fa
 	
 		</form>
 		
@@ -26,5 +32,29 @@
 	</div>
 	
 	<h1 align=center> Welcome to E-learning PlateForm</h1>
+	<h2> Listes des cours publiés sur le site</h2>
+	<table border="1">
+		<thead>
+			<tr>
+				<th>Catégories</th>
+				<th>Titres</th>
+				<th>Nombres de Chapitres</th>
+				<th>Nombres de Lectures</th>
+				<th>Prix</th>
+			</tr>
+		</thead>
+		<tbody>
+			<!--<c:forEach items="${ users }" var="u">
+				<tr>
+					<td>${ u.idUser }</td>
+					<td>${ u.mailUser }</td>
+					<td>${ u.passwordUser }</td>
+					<td>${ u.confirmedUser }</td>
+					<td>${ u.confirmedKeyUser }</td>
+					
+				</tr>
+			</c:forEach>-->
+		</tbody>
+	</table>
 </body>
 </html>
