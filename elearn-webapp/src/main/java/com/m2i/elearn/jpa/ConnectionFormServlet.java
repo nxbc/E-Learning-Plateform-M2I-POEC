@@ -20,7 +20,7 @@ import javax.transaction.RollbackException;
 import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 
-import org.apache.commons.validator.routines.EmailValidator;
+//import org.apache.commons.validator.routines.EmailValidator;
 
 
 
@@ -93,7 +93,8 @@ public class ConnectionFormServlet extends HttpServlet {
 		String id = request.getParameter("mailUser");
 		String password = request.getParameter("passwordUser");
 		LOGGER.info(String.format("Received id=%s", id));
-		
+	}
+		/*
 		if(! isValidEmailAddress(id)) {
 			LOGGER.info(String.format("%s is invalid", id));
 			response.sendError(404, "Page not found");
@@ -161,5 +162,5 @@ public class ConnectionFormServlet extends HttpServlet {
 		
 		return password != null;
 	}
-
+	
 }
