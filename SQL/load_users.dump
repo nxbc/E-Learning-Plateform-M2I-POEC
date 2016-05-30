@@ -1,4 +1,4 @@
 INSERT into users (mail_user, password_user)
 VALUES ('test@test.com', 'JO'),
-		('test@test.com','JO1'),
-('test@test.com','JO2');
+		('test1@test.com','JO1'),
+('test2@test.com','JO2');

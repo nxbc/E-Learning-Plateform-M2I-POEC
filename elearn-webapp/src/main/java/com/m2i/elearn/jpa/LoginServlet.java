@@ -1,13 +1,13 @@
 package com.m2i.elearn.jpa;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceUnit;
-import javax.persistence.TypedQuery;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -48,11 +48,35 @@ public class LoginServlet extends HttpServlet {
 		String mailUser = request.getParameter("mailUser");
 		String passwordUser = request.getParameter("passwordUser");
 		
+		LOGGER.info(String.format("Received mailUser=%s passwordUser=%s ", mailUser, passwordUser));
+		/*
 		UserJPA user = 
 				em.createQuery("SELECT u FROM UserJPA u WHERE u.mailUser = :mailUser AND u.passwordUser= :passwordUser", UserJPA.class)
 				.setParameter("mailUser", mailUser).setParameter("passwordUser",passwordUser).getSingleResult();
 				
 		LOGGER.info(String.format("Received User=%s", user));
+		*/
+		try{	
+			UserJPA user = 
+					em.createQuery("SELECT u FROM UserJPA u WHERE u.mailUser = :mailUser AND u.passwordUser= :passwordUser", UserJPA.class)
+					.setParameter("mailUser", mailUser).setParameter("passwordUser",passwordUser).getSingleResult();
+					LOGGER.info(String.format("Received User=%s", user));
+					
+					if(user!=null){
+						response.sendRedirect("http://localhost:8080/elearn-webapp-0.1/welcome/formateurwelcomepage");
+					}else{
+						//request.setAttribute("error", "Unknown user, please try again");
+			            request.getRequestDispatcher("/WEB-INF/ConnectionForm.jsp").forward(request, response);
+					}
+					
+			}catch(NoResultException e){
+				LOGGER.log(Level.INFO, "Problem using ELearningDS", e);
+				request.getRequestDispatcher("/WEB-INF/ConnectionFormResult.jsp").forward(request, response);
+				response.sendError(500, "Veuillez entrer le bon mot de passe ou identifiant");
+				
+				return;
+			}
+		
 	/*
         if (user != null) {
             request.getSession().setAttribute("user", user);
@@ -61,13 +85,13 @@ public class LoginServlet extends HttpServlet {
         else {
             request.setAttribute("error", "Unknown user, please try again");
             request.getRequestDispatcher("/login.jsp").forward(request, response);
-        }*/
-
+        }
+*/			/*
 		// verification du couple de getResultList
-		/*if(user!=null){
+		if(user!=null){
 			response.sendRedirect("http://localhost:8080/elearn-webapp-0.1/welcome/connectionform/formateurwelcomepage");
 		}else{
-			request.setAttribute("error", "Unknown user, please try again");
+			//request.setAttribute("error", "Unknown user, please try again");
             request.getRequestDispatcher("/WEB-INF/ConnectionForm.jsp").forward(request, response);
 		}*/
     }

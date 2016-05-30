@@ -14,7 +14,7 @@
 	<fieldset >
 	
     <legend> Accéder à Mon Compte : </legend>
-	  
+	   <p style="color:red; font-size:10px;">Veuillez entrez le bon Mot de passe ou Identifiant<p>
 	<label for="mail_user"> Username :</label>
 	<input id="mailUser" type="text" name="mailUser" />
 	<br><br>
