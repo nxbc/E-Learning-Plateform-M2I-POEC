@@ -26,7 +26,7 @@
 			<BR><BR>
 			
 			<label for="Password">Password</label>
-			<input id="passwordUser" type="text" name="passwordUser">
+			<input id="passwordUser" type="password" name="passwordUser">
 			<span class="erreur">${erreurs['passwordUser']}</span>
 			<BR><BR>
 			

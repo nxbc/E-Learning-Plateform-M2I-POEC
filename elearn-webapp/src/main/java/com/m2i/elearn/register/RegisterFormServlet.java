@@ -7,6 +7,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.Resource;
+import javax.mail.MessagingException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
@@ -21,6 +22,8 @@ import javax.transaction.NotSupportedException;
 import javax.transaction.RollbackException;
 import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
+
+import org.apache.commons.codec.digest.DigestUtils;
 
 import com.m2i.elearn.jpa.UserJPA;
 
@@ -78,9 +81,17 @@ public class RegisterFormServlet extends HttpServlet {
 		
 		UserJPA user = new UserJPA();
 		//user.setIdUser(1); sera créé automatiquement par la BDD
-		user.setMailUser(mailUser);
+		user.setMailUser("F"+mailUser);
 		user.setPasswordUser(passwordUser);
+		
+		
+		//TODO crypter la clé
+		String md5 = DigestUtils.md5Hex( mailUser );
+		user.setConfirmedKeyUser(md5);
+		LOGGER.info(" User/key "+mailUser + "/key:"+md5);
 
+		Mail mailConfirm;
+	
 		 /* Validation du champ email */
         try {
             validationMailUser( mailUser );
@@ -99,8 +110,6 @@ public class RegisterFormServlet extends HttpServlet {
         request.setAttribute( ATT_ERREURS, erreurs );
         ;
 
-        
-
 		LOGGER.info(" Before Save UserJPA -->"+user);
 
 		try {
@@ -108,15 +117,26 @@ public class RegisterFormServlet extends HttpServlet {
 			EntityManager em = emf.createEntityManager();
 			em.joinTransaction();
 			em.persist(user);
+			
+			
+			mailConfirm = new Mail(mailUser,
+					"Valider Inscription Formateur",
+					"Bonjour, veuillez cliquer sur le lien suivant pour confirmer votre inscription. Cordialement \n "
+					+ "http://localhost:8080/elearn-webapp-0.1/receivemail?id="+mailUser
+					+ "&key="+user.getConfirmedKeyUser());
+			
+			mailConfirm.sendMail();
+			
 			utx.commit();
 
 			LOGGER.info(String.format("User Saved mailUser=%s" , mailUser));
 
 			//TODO si OK, on repart ?...
 			response.sendRedirect(URL_ACCEUIL);
+			return;
 
 		} catch (NotSupportedException | SystemException | SecurityException | IllegalStateException | RollbackException
-				| HeuristicMixedException | HeuristicRollbackException e) {
+				| HeuristicMixedException | HeuristicRollbackException | MessagingException e) {
 			LOGGER.log(Level.INFO, "Transaction failed", e);
 			// TODO afficher message d'erreur
 
