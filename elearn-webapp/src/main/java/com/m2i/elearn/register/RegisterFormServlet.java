@@ -99,7 +99,7 @@ public class RegisterFormServlet extends HttpServlet {
         request.setAttribute( ATT_ERREURS, erreurs );
         ;
 
-        this.getServletContext().getRequestDispatcher("/WEB-INF/RegisterForm.jsp").forward(request, response);
+        
 
 		LOGGER.info(" Before Save UserJPA -->"+user);
 
@@ -135,6 +135,7 @@ public class RegisterFormServlet extends HttpServlet {
 		// PAS BON, faire une redirection !
 		// request.getRequestDispatcher("/filemanager").forward(request, response);
 		response.sendRedirect("/RegisterForm");
+		
 
 	}
 		private void validationMailUser( String mailUser )throws Exception{
@@ -162,7 +163,7 @@ public class RegisterFormServlet extends HttpServlet {
 				Message += "  1 chiffre";
 			}
 			if (Error){
-				throw new Exception( "Le mot de passe doit contenir au moins:"+ Message );
+				throw new Exception( "Le mot de passe doit contenir au moins:"+ Message  );
 			}	
 				
 			

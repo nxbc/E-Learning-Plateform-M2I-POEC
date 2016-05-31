@@ -4,10 +4,17 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<style type="text/css"><%@include file="/CSS/FormateurRegister.css" %></style>
 <title>Inscription Formateur</title>
 </head>
 <body>
 	
+	<div id="Accueil">
+		<form  method="post">
+		<a href="http://localhost:8080/elearn-webapp-0.1/welcome"> <input type="button" value="Retour Accueil" /></a>
+		</form>
+		<br><br>
+	</div>
 		
 		<form method="post" action="http://localhost:8080/elearn-webapp-0.1/RegisterForm">
 			
