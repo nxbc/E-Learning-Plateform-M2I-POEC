@@ -31,12 +31,6 @@ import com.m2i.elearn.jpa.UserJPA;
 
 
 
-
-
-
-
-
-
 /**
  * Servlet implementation class RegisterFormServlet
  */
@@ -76,14 +70,15 @@ public class RegisterFormServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		Map<String, String> erreurs = new HashMap<String, String>();
-
+		
 		String mailUser = request.getParameter("mailUser");
 		String passwordUser = request.getParameter("passwordUser");
 
 		LOGGER.info(String.format("Received mail_user=%s password_user=%s",  mailUser, passwordUser));
 		// TODO valider ici
 		// Si erreur => afficher formulaire + message d'erreur
-
+		
+		
 		UserJPA user = new UserJPA();
 		//user.setIdUser(1); sera créé automatiquement par la BDD
 		user.setMailUser("F"+mailUser);
@@ -96,8 +91,25 @@ public class RegisterFormServlet extends HttpServlet {
 		LOGGER.info(" User/key "+mailUser + "/key:"+md5);
 
 		Mail mailConfirm;
-		
-		
+	
+		 /* Validation du champ email */
+        try {
+            validationMailUser( mailUser );
+        } catch ( Exception e ) {
+            	erreurs.put( mail_user, e.getMessage() );
+            }
+        /* Validation du champ password */
+        try {   
+            validationPasswordUser( passwordUser );
+        } catch (Exception e) {
+        		erreurs.put( password_user, e.getMessage() );
+        }
+       
+
+        /* Stockage du résultat et des messages d'erreur dans l'objet request */
+        request.setAttribute( ATT_ERREURS, erreurs );
+        ;
+
 		LOGGER.info(" Before Save UserJPA -->"+user);
 
 		try {
@@ -128,11 +140,10 @@ public class RegisterFormServlet extends HttpServlet {
 			LOGGER.log(Level.INFO, "Transaction failed", e);
 			// TODO afficher message d'erreur
 
-			try {
+		try {
 				utx.rollback();
 				LOGGER.info(String.format("RoolBack %s" , mailUser));
-			} catch (IllegalStateException 
-					| SecurityException | SystemException e1) {
+		} catch (IllegalStateException 	| SecurityException | SystemException e1) {
 				LOGGER.log(Level.INFO, "Transaction rollback failed", e1);
 				// TODO afficher message d'erreur
 			}
@@ -144,36 +155,39 @@ public class RegisterFormServlet extends HttpServlet {
 		// PAS BON, faire une redirection !
 		// request.getRequestDispatcher("/filemanager").forward(request, response);
 		response.sendRedirect("/RegisterForm");
+		
 
 	}
-
-
-
-
-
-	private void validationUser( String mailUser ) throws Exception{
-		if ( mailUser != null && mailUser.trim().length() != 0 )  {
-			if ( !mailUser.matches( "([^.@]+)(\\.[^.@]+)*@([^.@]+\\.)+([^.@]+)" ) ) {
-				throw new Exception( "Merci de saisir une adresse mail valide." );
+		private void validationMailUser( String mailUser )throws Exception{
+			if ( mailUser != null && mailUser.trim().length() != 5 )  {
+				if ( !mailUser.matches( "([^.@]+)(\\.[^.@]+)*@([^.@]+\\.)+([^.@]+)" ) ) {
+					throw new Exception( "Merci de saisir une adresse mail valide." );
+				}
 			}
 		} 
-	}
-	private void validationPassword( String passwordUser ) throws Exception{
-		if ( passwordUser != null && passwordUser.trim().length() < 8 ) {
-			//TODO verifier 
-			if ( !passwordUser.matches("(!?=(.*[A-Z]){1,})(?!=(.*[0-9]){1,})")){
-				LOGGER.info(passwordUser + "Je suis dans le if");
-				throw new Exception( "Le mot de passe doit contenir au moins 8 caractères avec 1 majuscule et 1 chiffre." );	 
+		
+		private void validationPasswordUser( String passwordUser ) throws Exception{
+			
+			boolean Error = false;
+			String Message = "";
+			if ( passwordUser != null && passwordUser.trim().length() < 8 ) {
+				Error=true;
+				Message += " 8 charactères";
 			}
+			if ( !passwordUser.matches("[^A-Z]*[A-Z]+[^A-Z]*")){
+				Error=true;
+				Message += " 1 majuscule";	
+			}	
+			if ( !passwordUser.matches("[^0-9]*[0-9]+[^0-9]*")){
+				Error=true;
+				Message += "  1 chiffre";
+			}
+			if (Error){
+				throw new Exception( "Le mot de passe doit contenir au moins:"+ Message  );
+			}	
+				
+			
 		}
-		LOGGER.info(passwordUser + "Je ne suis pas dans le if");
-	}
-
-
-
-
-
-
-
-
+		
 }
+
