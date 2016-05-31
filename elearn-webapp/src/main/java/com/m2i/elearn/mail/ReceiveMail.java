@@ -1,8 +1,11 @@
 package com.m2i.elearn.mail;
 
 import java.io.IOException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.annotation.Resource;
+import javax.mail.MessagingException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;
@@ -12,6 +15,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.transaction.HeuristicMixedException;
+import javax.transaction.HeuristicRollbackException;
+import javax.transaction.NotSupportedException;
+import javax.transaction.RollbackException;
+import javax.transaction.SystemException;
+import javax.transaction.UserTransaction;
 
 import com.m2i.elearn.jpa.UserJPA;
 
@@ -23,8 +32,13 @@ public class ReceiveMail extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 
+	private static final String URL_ACCEUIL = "http://localhost:8080/elearn-webapp-0.1/welcome";
+
 	@PersistenceUnit(unitName="ELearningPU")
 	private EntityManagerFactory emf;
+
+	@Resource
+	private UserTransaction utx;
 
 	private static final Logger LOGGER = Logger.getLogger(ReceiveMail.class.getName());
 
@@ -36,12 +50,6 @@ public class ReceiveMail extends HttpServlet {
 		String mailUser = request.getParameter("id");
 		String confirmedKeyUser = request.getParameter("key");
 
-		//TODO test avant que la servlet creation de mail soit OK
-		mailUser="a@b.fr";
-		confirmedKeyUser="123456789";
-
-
-		
 		EntityManager em = emf.createEntityManager();
 
 		UserJPA userF = null;
@@ -75,31 +83,77 @@ public class ReceiveMail extends HttpServlet {
 				response.sendError(404, "Page not found");
 				return;
 			} 
-			updateUserConfirmed(userE);
-			
+			updateUserConfirmed(userE, response);
+
 		} else {
 			if (userF.isConfirmedUser()){
 				LOGGER.info(String.format("%s already confirmed, 404", userF.getMailUser()));
 				response.sendError(404, "Page not found");
 				return;
 			}
-			updateUserConfirmed(userF);
+			updateUserConfirmed(userF, response);
 		}
-		
-		
+
+		//TODO
 
 
-		response.getWriter().append("ReceiveMail Confirmed ").append(request.getContextPath());
+		response.sendRedirect(URL_ACCEUIL);
+		//response.getWriter().append("ReceiveMail Confirmed for "+mailUser).append(request.getContextPath());
+
 	}
 
-
-	private void updateUserConfirmed(UserJPA user) {
+	private void updateUserConfirmed(UserJPA user, HttpServletResponse response) {
 
 		// TODO a controler, user controlé comme non deja confirmed, mettre a jour la BDD confirmed passe a VRAI 
+
+		LOGGER.info(String.format("%s confirmed en cours...", user.getMailUser()));
 		
-		LOGGER.info(String.format("%s confirmed a faire", user.getMailUser())); 
+		EntityManager em = emf.createEntityManager();
+		UserJPA userLu = em.find(UserJPA.class, user.getIdUser());
+		
+		userLu.setConfirmedUser(true);
+		
+		
+		
 
+		try {
+			utx.begin();
+			//EntityManager em = emf.createEntityManager();
+			em.joinTransaction();
+			em.persist(userLu);
+			utx.commit();
 
+			LOGGER.info(String.format("User-confirmed update to true  mailUser=%s" , userLu.getMailUser()));
+
+			//TODO si OK, on repart ?...
+			response.sendRedirect(URL_ACCEUIL);
+			return;
+
+		} catch (NotSupportedException | SystemException | SecurityException | IllegalStateException | RollbackException
+				| HeuristicMixedException | HeuristicRollbackException | IOException e) {
+			LOGGER.log(Level.INFO, "Transaction failed", e);
+			// TODO afficher message d'erreur
+			e.printStackTrace();
+			
+
+			try {
+				utx.rollback();
+				LOGGER.info(String.format("RoolBack %s" , userLu.getMailUser()));
+				
+			} catch (SystemException e1) {
+				LOGGER.log(Level.INFO, "Transaction rollback failed", e1);
+				// TODO afficher message d'erreur
+				e1.printStackTrace();
+			}
+
+		}
+		//TODO si KO ?
+		try {
+			response.sendError(500, "Server Problem");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 
