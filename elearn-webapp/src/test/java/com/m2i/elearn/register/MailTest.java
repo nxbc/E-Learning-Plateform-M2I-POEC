@@ -3,12 +3,14 @@ package com.m2i.elearn.register;
 import javax.mail.AuthenticationFailedException;
 import javax.mail.MessagingException;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import junit.framework.TestCase;
 
+@Ignore
 public class MailTest extends TestCase {
-
+	
 	/**
 	 * Send mail to Gmail account.
 	 * @throws AuthenticationFailedException
