@@ -1,6 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ page language="java" contentType="text/html; UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
@@ -19,7 +19,7 @@
 		<form method="post" action="http://localhost:8080/elearn-webapp-0.1/RegisterForm">
 			
 			<fieldset>
-			<legend><h2>Inscription Formateur</h2></legend>
+			<legend>Inscription Formateur</legend>
 			<label for="User">User</label>
 			<input id="mailUser" type="text" name="mailUser">
 			<span class="erreur">${erreurs['mailUser']}</span>

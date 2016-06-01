@@ -25,6 +25,7 @@ import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.mindrot.jbcrypt.BCrypt;
 
 import com.m2i.elearn.jpa.UserJPA;
 
@@ -79,39 +80,41 @@ public class RegisterFormServlet extends HttpServlet {
 		// TODO valider ici
 		// Si erreur => afficher formulaire + message d'erreur
 
-//		try {   
-//			CheckingExistingMailUser(mailUser);
-//		} catch (Exception e) {
-//			erreurs.put( mail_user, e.getMessage() );
-//		}
+		//		try {   
+		//			CheckingExistingMailUser(mailUser);
+		//		} catch (Exception e) {
+		//			erreurs.put( mail_user, e.getMessage() );
+		//		}
 
 		EntityManager em2 = emf.createEntityManager();
 		UserJPA userF = null;
 
 		String mailUserF = "F"+ mailUser;
-		LOGGER.info(String.format(" ******* Check mailUser %s", mailUserF));
-		
+		LOGGER.info(String.format("Check mailUser %s exist ?", mailUserF));
+
 		try{ // Clé Formateur
 			userF =	em2.createQuery("SELECT u FROM UserJPA u WHERE u.mailUser = :mailUser", UserJPA.class)
 					.setParameter("mailUser", mailUserF).getSingleResult();
 		} catch (NoResultException e){
 			//OK le mail de l'utilisateur n'existe pas en base
 		};
-		
+
 		if (userF != null){
 			erreurs.put( mail_user, "Adresse mail déjà choisie par un utilisateur.");
 			request.setAttribute( ATT_ERREURS, erreurs );
 			request.getRequestDispatcher("/WEB-INF/RegisterForm.jsp").forward(request, response);
 			return;
 		}
-		
-		
-		
+
+
+
 		UserJPA user = new UserJPA();
 		//user.setIdUser(1); sera créé automatiquement par la BDD
 		user.setMailUser("F"+mailUser);
-		user.setPasswordUser(passwordUser);
-
+		
+		String passwordUserCrypt = BCrypt.hashpw(passwordUser, BCrypt.gensalt(12));
+		user.setPasswordUser(passwordUserCrypt);
+		LOGGER.info(String.format(" User %s, password %s, passwordBcrypt %s",mailUser,passwordUser,passwordUserCrypt));
 
 		//TODO crypter la clé
 		String md5 = DigestUtils.md5Hex( mailUser );
@@ -136,8 +139,8 @@ public class RegisterFormServlet extends HttpServlet {
 
 		/* Stockage du résultat et des messages d'erreur dans l'objet request */
 		request.setAttribute( ATT_ERREURS, erreurs );
-		
-		
+
+
 		if (!erreurs.isEmpty()){
 			request.getRequestDispatcher("/WEB-INF/RegisterForm.jsp").forward(request, response);
 			return;
@@ -192,10 +195,11 @@ public class RegisterFormServlet extends HttpServlet {
 
 	}
 	private void validationMailUser( String mailUser )throws Exception{
-		if ( mailUser != null && mailUser.trim().length() != 5 )  {
-			if ( !mailUser.matches( "([^.@]+)(\\.[^.@]+)*@([^.@]+\\.)+([^.@]+)" ) ) {
-				throw new Exception( "Merci de saisir une adresse mail valide." );
-			}
+		if (mailUser == null){
+			throw new Exception( "Merci de saisir une adresse mail valide." );
+		}
+		if ( !mailUser.matches( "([^.@]+)(\\.[^.@]+)*@([^.@]+\\.)+([^.@]+)" ) ) {
+			throw new Exception( "Merci de saisir une adresse mail valide." );
 		}
 	} 
 
@@ -205,7 +209,7 @@ public class RegisterFormServlet extends HttpServlet {
 		String Message = "";
 		if ( passwordUser != null && passwordUser.trim().length() < 8 ) {
 			Error=true;
-			Message += " 8 charactères";
+			Message += " 8 caractères";
 		}
 		if ( !passwordUser.matches("[^A-Z]*[A-Z]+[^A-Z]*")){
 			Error=true;
@@ -219,22 +223,6 @@ public class RegisterFormServlet extends HttpServlet {
 			throw new Exception( "Le mot de passe doit contenir au moins:"+ Message  );
 		}	
 	}
-
-	private void CheckingExistingMailUser( String mailUser )throws Exception{
-		EntityManager em = emf.createEntityManager();
-		UserJPA userF = null;
-
-		String mailUserF = "F"+ mailUser;
-		LOGGER.info(String.format(" ******* Check mailUser %s key<%s>", mailUserF));
-		
-//		try{ // Clé Formateur
-//			userF =	em.createQuery("SELECT u FROM UserJPA u WHERE u.mailUser = :mailUser", UserJPA.class)
-//					.setParameter("mailUser", mailUserF).getSingleResult();
-//		} catch (NoResultException e){
-//			return;
-//		};
-//		throw new Exception( "Adresse mail déjà choisie par un utilisateur." );
-	} 
 
 }
 
