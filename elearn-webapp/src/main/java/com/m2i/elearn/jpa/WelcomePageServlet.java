@@ -32,20 +32,18 @@ public class WelcomePageServlet extends HttpServlet {
 		EntityManager em = emf.createEntityManager();
 
 		
-		TypedQuery<UserJPA> query = 
-				em.createNamedQuery("UserJPA.FIND_ALL_ORDER_BY_ID", UserJPA.class)
+		TypedQuery<CourseJPA> queryListCoursesPublished = 
+				em.createNamedQuery("CourseJPA.FIND_ALL_ORDER_BY_ID", CourseJPA.class)
 				  .setFirstResult(0)
-				  .setMaxResults(10);	
+				  .setMaxResults(5);	
 		
-		List<UserJPA> users = query.getResultList();
-		LOGGER.info(String.format("Found %d users %n %s", users.size(), users));
+		List<CourseJPA> courses = queryListCoursesPublished.getResultList();
+		LOGGER.info(String.format("Found %d courses %n %s", courses.size(), courses));
 		
-		request.setAttribute("users", users);
+		request.setAttribute("courses", courses);
 		
-		request.getRequestDispatcher("/WEB-INF/WelcomePage.jsp")
-		.forward(request, response);
-		LOGGER.info(String.format("response %s", response));
-	
+		request.getRequestDispatcher("/WEB-INF/WelcomePage.jsp").forward(request, response);
+		
 	}
 
 	/**

@@ -1,6 +1,8 @@
-package com.m2i.elearn.mail;
+package com.m2i.elearn.register;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -51,6 +53,7 @@ public class ReceiveMail extends HttpServlet {
 		String confirmedKeyUser = request.getParameter("key");
 
 		EntityManager em = emf.createEntityManager();
+		Map<String, String> erreurs = new HashMap<String, String>();
 
 		UserJPA userF = null;
 		UserJPA userE = null;
@@ -76,7 +79,7 @@ public class ReceiveMail extends HttpServlet {
 			}
 		};
 
-		//TODO refactoriser (attention a "reponse")
+		//On gère un Eleve
 		if (userF == null){
 			if (userE.isConfirmedUser()){
 				LOGGER.info(String.format("%s already confirmed, 404", userE.getMailUser()));
@@ -85,7 +88,7 @@ public class ReceiveMail extends HttpServlet {
 			} 
 			updateUserConfirmed(userE, response);
 
-		} else {
+		} else {//On gère un Formateur
 			if (userF.isConfirmedUser()){
 				LOGGER.info(String.format("%s already confirmed, 404", userF.getMailUser()));
 				response.sendError(404, "Page not found");
@@ -94,12 +97,8 @@ public class ReceiveMail extends HttpServlet {
 			updateUserConfirmed(userF, response);
 		}
 
-		//TODO
-
-
 		response.sendRedirect(URL_ACCEUIL);
-		//response.getWriter().append("ReceiveMail Confirmed for "+mailUser).append(request.getContextPath());
-
+		
 	}
 
 	private void updateUserConfirmed(UserJPA user, HttpServletResponse response) {
