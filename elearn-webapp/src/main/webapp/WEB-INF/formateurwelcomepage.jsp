@@ -10,57 +10,27 @@
     </style>
 </head>
 <body>
+
 	<div id="Loggin">
 		<form  method="post">
 			
-				<p>Bonjour <a href=""> mail ${ user.mailUser }</a></p>
+				<p class="id">Bonjour ${ user.mailUser }</p>
+			
+		<a href="http://localhost:8080/elearn-webapp-0.1/welcome"> <input type="button" value="Retour Accueil" /></a>
 		
-			<a href="http://localhost:8080/elearn-webapp-0.1/welcome"> <input type="button" value="Log Out" /></a>
+		<a href="http://localhost:8080/elearn-webapp-0.1/welcome"> <input type="button" value="Log Out" /></a>
 		</form>
 		
 		<br><br>
 	</div>
 	
-	<h1 align=center> Welcome to Your Courses Plateform</h1>
+	<h1 align=center> Welcome to Your Courses Plateform</h1><br><br>
+	<a href="http://localhost:8080/elearn-webapp-0.1/createcourse"> <input type="button" value="Créer cours" /></a><br><br>
 	<h2> Listes de vos cours</h2>
-	<table border="1">
-		<!--<thead>
-			<tr>
-				<th>Catégories</th>
-				<th>Titres</th>
-				<th>Nombres de Chapitres</th>
-				<th>Nombres de Lectures</th>
-				<th>Prix</th>
-			</tr>
-		</thead>-->
-		<tbody>
-			<!-- <c:forEach items="${ users }" var="u">  -->
-				<tr>
-					<td><img src="/images/javacourse.jpg" ${ u.isPublish }/></td>
-					<td><img src="images/javacourse.jpg" ${ u.isPublish }/></td>
-					<td><img src="images/javacourse.jpg" ${ u.isPublish }/></td>
-					<td><img src="images/javacourse.jpg"${ u.isPublish }/></td>
-					<td><img src="images/javacourse.jpg"${ u.isPublish }/></td>
+	<a href = "" ><img src="images/javacourse.jpg" ${ u.isPublish } class="image"/></a>
+	<a href = "" ><img src="images/javacourse.jpg" ${ u.isPublish }  class="image"/></a>
+	<a href = "" ><img src="images/javacourse.jpg" ${ u.isPublish }  class="image"/></a>
 					
-				</tr>
-				<tr>
-					<td><img src="images/javacourse.jpg"${ u.isPublish }/></td>
-					<td><img src="images/javacourse.jpg"${ u.isPublish }/></td>
-					<td><img src="images/javacourse.jpg"${ u.isPublish }/></td>
-					<td><img src="images/javacourse.jpg"${ u.isPublish }/></td>
-					<td><img src="images/javacourse.jpg"${ u.isPublish }/></td>
-					
-				</tr>
-				<tr>
-					<td><img src="images/javacourse.jpg"${ u.isPublish }/></td>
-					<td><img src="images/javacourse.jpg"${ u.isPublish }/></td>
-					<td><img src="images/javacourse.jpg"${ u.isPublish }/></td>
-					<td><img src="images/javacourse.jpg"${ u.isPublish }/></td>
-					<td><img src="images/javacourse.jpg"${ u.isPublish }/></td>
-					
-				</tr>
-			<!--</c:forEach>  -->
-		</tbody>
-	</table>
+
 </body>
 </html>

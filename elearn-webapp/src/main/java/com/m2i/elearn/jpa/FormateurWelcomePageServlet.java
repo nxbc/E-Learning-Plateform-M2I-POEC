@@ -26,7 +26,7 @@ import javax.transaction.UserTransaction;
 /**
  * Servlet implementation class FormateurWelcomePageServlet
  */
-@WebServlet(name = "formateurwelcomepage", urlPatterns = { "/welcome/formateurwelcomepage/*" })
+@WebServlet("/formateurwelcomepage")
 public class FormateurWelcomePageServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -41,10 +41,9 @@ public class FormateurWelcomePageServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.getRequestDispatcher("/WEB-INF/formateurwelcomepage.jsp").forward(request, response);
 
-		LOGGER.info(String.format("request.getContextPath() %s", request.getContextPath()));
-		LOGGER.info(String.format("request.getServletPath() %s", request.getServletPath()));
-		LOGGER.info(String.format("request.getPathInfo() %s", request.getPathInfo()));
+	
 		
 		String id = request.getParameter("idUser");
 		
