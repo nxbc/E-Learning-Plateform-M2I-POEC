@@ -10,8 +10,12 @@
 <h1>Création d'un cours</h1>
 	
 <form method="POST" action="http://localhost:8080/elearn-webapp-0.1/courseform">
+	<div id="erreurcreate">
+		<span class="erreur">${erreurs['erreur']}</span>
+	</div>
 	<div id="creationcour">
 		<label for="titre">Titre * </label>
+		
 		<input id="titre" type="text" name="titre"><br/>
 		
 		<label for="description">Description * </label>
@@ -20,7 +24,7 @@
 		<label for="category">Catégorie * </label>
 		<select id="category" name="category">
 		 	<option style="display:none;" value="">&nbsp;</option>
-			<option value="Developpement">Développement</option>
+			<option value="Developpement" selected>Développement</option>
 			<option value="Business">Business</option>
 			<option value="InformatiqueLogiciels">Informatique et logiciels</option>
 			<option value="ProductiviteBureautique">Productivité bureautique</option>
