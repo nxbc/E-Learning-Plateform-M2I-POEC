@@ -30,31 +30,41 @@ import com.m2i.elearn.jpa.UserJPA;
  * Servlet implementation class ReceiveMail
  */
 @WebServlet("/receivemail")
-public class ReceiveMail extends HttpServlet {
+public class ReceiveMailServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
-
-	private static final String URL_ACCEUIL = "http://localhost:8080/elearn-webapp-0.1/welcome";
-
+	
 	@PersistenceUnit(unitName="ELearningPU")
 	private EntityManagerFactory emf;
 
 	@Resource
 	private UserTransaction utx;
 
-	private static final Logger LOGGER = Logger.getLogger(ReceiveMail.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(ReceiveMailServlet.class.getName());
 
+	
+	/**
+	 * @author Seb
+	 * 
+	 * Le "Formateur" a recu un mail dans sa boite mail. Ce dernier contient un lien de confirmation de creation de compte.
+	 * En cliquant sur ce lien, on arrive sur cette Servlet.
+	 * Il faut dans le lien : l'id ("id"=mailUser) et la clé ("key"=confirmedKeyUser)
+	 * Si le User est deja enregistré : erreur 404 (message detaillé dans la log)
+	 * Sinon, une page lui indique qu'il est a present enregistré
+	 * 
+	 * information : la confirmation d'un "Eleve" est déja en place
+	 */
+	
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO generer une clé id  
+		  
 		String mailUser = request.getParameter("id");
 		String confirmedKeyUser = request.getParameter("key");
 
 		EntityManager em = emf.createEntityManager();
-		Map<String, String> erreurs = new HashMap<String, String>();
-
+		
 		UserJPA userF = null;
 		UserJPA userE = null;
 
@@ -97,13 +107,11 @@ public class ReceiveMail extends HttpServlet {
 			updateUserConfirmed(userF, response);
 		}
 
-		response.sendRedirect(URL_ACCEUIL);
+		request.getRequestDispatcher("/WEB-INF/RegisterConfirmedByMail.jsp").forward(request, response);
 		
 	}
 
 	private void updateUserConfirmed(UserJPA user, HttpServletResponse response) {
-
-		// TODO a controler, user controlé comme non deja confirmed, mettre a jour la BDD confirmed passe a VRAI 
 
 		LOGGER.info(String.format("%s confirmed en cours...", user.getMailUser()));
 		
@@ -112,61 +120,43 @@ public class ReceiveMail extends HttpServlet {
 		
 		userLu.setConfirmedUser(true);
 		
-		
-		
-
 		try {
 			utx.begin();
-			//EntityManager em = emf.createEntityManager();
+			
 			em.joinTransaction();
 			em.persist(userLu);
 			utx.commit();
 
 			LOGGER.info(String.format("User-confirmed update to true  mailUser=%s" , userLu.getMailUser()));
 
-			//TODO si OK, on repart ?...
-			response.sendRedirect(URL_ACCEUIL);
 			return;
 
 		} catch (NotSupportedException | SystemException | SecurityException | IllegalStateException | RollbackException
-				| HeuristicMixedException | HeuristicRollbackException | IOException e) {
+				| HeuristicMixedException | HeuristicRollbackException e) {
 			LOGGER.log(Level.INFO, "Transaction failed", e);
-			// TODO afficher message d'erreur
+			
 			e.printStackTrace();
 			
-
 			try {
 				utx.rollback();
 				LOGGER.info(String.format("RoolBack %s" , userLu.getMailUser()));
 				
 			} catch (SystemException e1) {
 				LOGGER.log(Level.INFO, "Transaction rollback failed", e1);
-				// TODO afficher message d'erreur
+			
 				e1.printStackTrace();
 			}
 
 		}
-		//TODO si KO ?
+		
+		// dans tous les cas anormaux , on met une erreur serveur 
 		try {
 			response.sendError(500, "Server Problem");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			 
 			e.printStackTrace();
 		}
 
 	}
-
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
-	}
-
-
-
-
 
 }
