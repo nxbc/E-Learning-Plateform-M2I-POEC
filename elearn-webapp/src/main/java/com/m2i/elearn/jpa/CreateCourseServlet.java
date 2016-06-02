@@ -20,6 +20,9 @@ import javax.transaction.RollbackException;
 import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
 /**
  * Servlet implementation class UpdateCourseServlet
  */
@@ -58,6 +61,15 @@ public class CreateCourseServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+				
+		JsonObject data = new Gson().fromJson(request.getReader(), JsonObject.class);
+		String titleCourse = data.get("titleCourse").getAsString();
+		String descriptCourse = data.get("descriptCourse").getAsString();
+		String skillsCourse = data.get("skillsCourse").getAsString();
+		
+		LOGGER.info(String.format("***JSON recup DATA titleCourse:%s descriptCourse:%s skillsCourse:%s", titleCourse,descriptCourse,skillsCourse));
+		
+		
 		String titre = request.getParameter("titre");
 		String description = request.getParameter("description");
 		String category = request.getParameter("category");
