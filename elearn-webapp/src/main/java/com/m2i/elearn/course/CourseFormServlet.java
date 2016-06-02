@@ -2,6 +2,7 @@ package com.m2i.elearn.course;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,6 +24,10 @@ import javax.transaction.RollbackException;
 import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+
 import com.m2i.elearn.jpa.CourseJPA;
 
 /**
@@ -33,8 +38,10 @@ public class CourseFormServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	private static final Logger LOGGER = Logger.getLogger(CourseFormServlet.class.getName());
-	
 	private static final String URL_HOME = "http://localhost:8080/elearn-webapp-0.1/welcome";
+	
+	JSONParser jsonParser = new JSONParser();
+	JSONObject jsonObject = new JSONObject();
 	
 	@PersistenceUnit(unitName = "ELearningPU")
 	private EntityManagerFactory emf;
@@ -51,6 +58,7 @@ public class CourseFormServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		Map<String, String> erreurs = new HashMap<String, String>();
+		
 		
 		String titre = request.getParameter("titre");
 		String description = request.getParameter("description");
@@ -116,6 +124,13 @@ public class CourseFormServlet extends HttpServlet {
 				LOGGER.log(Level.INFO, "Transaction rollback failed", e1);
 				response.sendError(500, "Server error");
 			}
+		}
+		
+		
+		JSONArray chap = (JSONArray) jsonObject.get("chapters");
+		Iterator<String> iterator = chap.iterator();
+		while (iterator.hasNext()) {
+			System.out.println(iterator.next());
 		}
 	}
 }
