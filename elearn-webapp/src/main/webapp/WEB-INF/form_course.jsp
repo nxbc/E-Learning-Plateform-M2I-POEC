@@ -67,7 +67,10 @@
 	<br/>
 	<br/>
 	<br/>
-	<input type="submit" value="Créer cours">
+	
+	<div id="submitbutton">
+		<a  href="">Créer cours</a>
+	</div>
 
 
 </form>
@@ -76,7 +79,7 @@
 
 
 
- <script src="js/form_course.js"></script> 
+ <script src="js/form_course_ForcerJSONPourTestSevlet.js"></script> 
  <script src="js/Lecture.js"></script>
  <script src="js/Chapitre.js"></script>
  <script src="js/Cours.js"></script>
