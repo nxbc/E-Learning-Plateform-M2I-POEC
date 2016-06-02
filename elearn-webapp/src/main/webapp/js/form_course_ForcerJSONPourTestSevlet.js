@@ -61,6 +61,7 @@ function creationInputDansleFormNouveauCours(){
 	linksSubmit.addEventListener('click', function(e) {
 		console.log('submit course check in progress..');
 		e.preventDefault();
+		 
 		
 		xhr.open('POST', URL);
 		xhr.send(courseManualData)
