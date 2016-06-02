@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 
-
+import org.mindrot.jbcrypt.BCrypt;
 
 
 /**
@@ -66,6 +66,8 @@ public class LoginServlet extends HttpServlet {
 		
 		String passwordUser = request.getParameter("passwordUser");	
 		
+	
+		//BCrypt.checkpw(candidate, hashedValue);
 		LOGGER.info(String.format("Received mailUser=%s passwordUser=%s ", mailUser, passwordUser));
 		/*
 		UserJPA user = 
@@ -79,7 +81,7 @@ public class LoginServlet extends HttpServlet {
 					em.createQuery("SELECT u FROM UserJPA u WHERE u.mailUser = :mailUser AND u.passwordUser= :passwordUser", UserJPA.class)
 					.setParameter("mailUser", mailUser).setParameter("passwordUser",passwordUser).getSingleResult();
 					LOGGER.info(String.format("Received User=%s", user));
-				
+					//BCrypt.checkpw(mailUser, passwordUser);
 					if(user!=null){
 						LOGGER.info(String.format("Login Servlet user is not null"));
 						HttpSession mysession = request.getSession(false);

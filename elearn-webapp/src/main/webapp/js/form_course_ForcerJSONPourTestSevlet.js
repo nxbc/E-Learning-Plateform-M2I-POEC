@@ -1,5 +1,8 @@
 	console.log('Avant appel de la focntion', 'ok');
 	
+	var xhr = new XMLHttpRequest();
+	var URL = "http://localhost:8080/elearn-webapp-0.1/createcourse";
+	
 	courseManualData =
 	{	"titleCourse" : "Cours Init 1" ,
 		"descriptCourse" : "1er Exemple de cours" ,
@@ -58,13 +61,19 @@ function creationInputDansleFormNouveauCours(){
 	linksSubmit.addEventListener('click', function(e) {
 		console.log('submit course check in progress..');
 		e.preventDefault();
-		$.ajax(
-				   {
-				      course: courseManualData ,   //mydata={"name":"abc","age":"21"}
-				      method:POST,
-				      url: "/CourseFormServlet",
-				      success: function(response){alert(response);}
-				   })
+		
+		xhr.open('POST', URL);
+		xhr.send(courseManualData)
+		
+//		$.ajax(
+//				   {
+//				      //course: courseManualData ,   //mydata={"name":"abc","age":"21"}
+//				      method:POST,
+//				      contentType: "application/json", // NOT dataType!
+//				      course: JSON.stringify(courseManualData),
+//				      url: "CourseFormServlet",
+//				      success: function(response){alert(response);}
+//				   })
 		console.log('submit course check done');
 	});
 	
