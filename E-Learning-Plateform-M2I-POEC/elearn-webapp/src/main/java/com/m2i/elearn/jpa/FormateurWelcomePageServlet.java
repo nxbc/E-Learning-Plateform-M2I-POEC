@@ -6,7 +6,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.annotation.Resource;
-import javax.inject.Inject;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
 import javax.servlet.ServletException;
@@ -39,8 +38,8 @@ public class FormateurWelcomePageServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	
-	@Inject
-	private UserServices usersService;
+	//@Inject
+	//private UserServices usersService;
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -69,29 +68,7 @@ public class FormateurWelcomePageServlet extends HttpServlet {
 		request.setAttribute("userMail", mailUser);
 		request.getRequestDispatcher("/WEB-INF/formateurwelcomepage.jsp")
 					.forward(request, response);
-		
-		try{
-			HttpSession session=request.getSession();
-			if( session.getAttribute("userMail")==null){
-			LOGGER.info(String.format("es ce que la session existe tjr %s ", session.getAttribute("userMail")));
-			response.setHeader("Cache-Control","private,no-cache , must-revalidate");
-			response.setHeader("Cache-Control","private,no-store");
-			response.setHeader("Pragma","no-cache");
-			response.setDateHeader ("Expires", 0);
-			session.invalidate();
-			 /* Affichage de la page de connexion */
-	        this.getServletContext().getRequestDispatcher("/WEB-INF/ConnectionForm.jsp").forward( request, response );
-
-			//request.getRequestDispatcher("/WEB-INF/ConnectionForm.jsp").forward(request, response);
-			LOGGER.info(String.format("es ce que la session existe tjr %s ", request.getParameter("session"))); 
-	        //response.sendRedirect("http://localhost:8080/elearn-webapp-0.1/welcome");
-	        }else{
-	        	//request.getRequestDispatcher("/WEB-INF/ConnectionForm.jsp").forward(request, response);
-	        }
-		}catch(Exception e){
-			//response.sendRedirect("http://localhost:8080/elearn-webapp-0.1/login");
-		
-		}
+	
 	}
 
 	/**

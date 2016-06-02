@@ -49,26 +49,34 @@ public class LogoutServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session=request.getSession();
-	try{
+		try{
+			
 		if( session.getAttribute("userMail")!=null){
-		LOGGER.info(String.format("es ce que la session existe tjr %s ", session.getAttribute("userMail")));
+		LOGGER.info(String.format("es ce que la session existe tjr : %s ", session.getAttribute("userMail")));
 		response.setHeader("Cache-Control","private,no-cache , must-revalidate");
 		response.setHeader("Cache-Control","private,no-store");
 		response.setHeader("Pragma","no-cache");
 		response.setDateHeader ("Expires", 0);
 		session.invalidate();
 		 /* Affichage de la page de connexion */
-        this.getServletContext().getRequestDispatcher("/WEB-INF/ConnectionForm.jsp").forward( request, response );
+        //this.getServletContext().getRequestDispatcher("/WEB-INF/ConnectionForm.jsp").forward( request, response );
 
 		//request.getRequestDispatcher("/WEB-INF/ConnectionForm.jsp").forward(request, response);
-		LOGGER.info(String.format("es ce que la session existe tjr %s ", request.getParameter("session"))); 
-        //response.sendRedirect("http://localhost:8080/elearn-webapp-0.1/welcome");
+		LOGGER.info(String.format("es ce que la session existe tjr : %s ", request.getParameter("session"))); 
+        response.sendRedirect("http://localhost:8080/elearn-webapp-0.1/welcome");
         }else{
+        	if ( request.getSession(false) == null )
+        	{
+        	   // ... là, elle n'existe pas
+        		request.getRequestDispatcher("/WEB-INF/ConnectionFormResult.jsp").forward(request, response);
+        		LOGGER.info(String.format("Request : %s ; Response : %s" ,request, response));
+        	}
+
         	//request.getRequestDispatcher("/WEB-INF/ConnectionForm.jsp").forward(request, response);
         }
 	}catch(Exception e){
 		//response.sendRedirect("http://localhost:8080/elearn-webapp-0.1/login");
 	}
 	}
-
+	
 }
