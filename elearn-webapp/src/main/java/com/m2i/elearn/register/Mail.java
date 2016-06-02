@@ -25,7 +25,7 @@ public class Mail {
 	 */
 	public void sendMail() throws AuthenticationFailedException, MessagingException  {
 		
-		from = "elearningtest02@outlook.fr";
+		from = "earlearning-platform@outlook.fr";
 		
 		Properties props = new Properties();
 		props.put("mail.transport.protocol", "smtp");
@@ -45,7 +45,7 @@ public class Mail {
 
 	    try {
 	    	Transport transport = session.getTransport("smtp");
-	    	transport.connect("smtp-mail.outlook.com", 587, "elearningtest02@outlook.fr", "testeLearn");
+	    	transport.connect("smtp-mail.outlook.com", 587, "earlearning-platform@outlook.fr", "testeLearn");
 	    	transport.sendMessage(message, message.getAllRecipients());
 	    	transport.close();
 	    } catch (MessagingException mex) {

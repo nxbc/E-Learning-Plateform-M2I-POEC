@@ -50,9 +50,7 @@
 		<label for="required">Compétence requise par le cours</label>
 		<input id="required" type="text" name="required"><br/>
 	<p>(*champs sont obligatoires)</p>
-	
-	
-	
+
 	
 	</div>
 	<div id="chapitrebutton">
@@ -61,8 +59,6 @@
 	<div id="chapitreliste">
 		
 	</div>		
-		
-		
 		<br/>
 	<br/>
 	<br/>
