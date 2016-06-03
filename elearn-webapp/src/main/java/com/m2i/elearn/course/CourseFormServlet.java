@@ -24,10 +24,6 @@ import javax.transaction.RollbackException;
 import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-
 import com.m2i.elearn.jpa.CourseJPA;
 
 /**
@@ -120,15 +116,6 @@ public class CourseFormServlet extends HttpServlet {
 				LOGGER.log(Level.INFO, "Transaction rollback failed", e1);
 				response.sendError(500, "Server error");
 			}
-		}
-		
-		
-		JSONParser jsonParser = new JSONParser();
-		JSONObject jsonObject = new JSONObject();
-		JSONArray chap = (JSONArray) jsonObject.get("chapters");
-		Iterator<String> iterator = chap.iterator();
-		while (iterator.hasNext()) {
-			System.out.println(iterator.next());
 		}
 	}
 }
