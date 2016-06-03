@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 
-import org.mindrot.jbcrypt.BCrypt;
+
 
 
 /**
@@ -39,12 +39,20 @@ public class LoginServlet extends HttpServlet {
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		String mailUser = request.getParameter("mailuser");
+		String mailUser = request.getParameter("mailUser");
+		String passwordUser = request.getParameter("passwordUser");
+		boolean confirmedUser = Boolean.parseBoolean(request.getParameter("confirmedUser")); 
+		
 		UserJPA user = usersService.findWithMail(mailUser);
 		
 		LOGGER.info(String.format("Found %s user", user));
 
-		
+		EntityManager em = emf.createEntityManager();
+		UserJPA userjpa = 
+				em.createQuery("SELECT confirmedUser FROM UserJPA WHERE confirmedUser.mailUser = :mailUser AND confirmedUser.passwordUser= :passwordUser", UserJPA.class)
+				.setParameter("mailUser", mailUser).setParameter("passwordUser",passwordUser).getSingleResult();
+				LOGGER.info(String.format("Received User = %s", userjpa));
+				LOGGER.info(String.format("Received mailUser=%s passwordUser=%s confirmedUser=%s ", mailUser, passwordUser,confirmedUser));
 		request.getRequestDispatcher("/WEB-INF/ConnectionForm.jsp")
 				.forward(request, response);
 	}
@@ -66,9 +74,11 @@ public class LoginServlet extends HttpServlet {
 		
 		String passwordUser = request.getParameter("passwordUser");	
 		
-	
+		//boolean confirmedUser = Boolean.valueOf("confirmedUser");
+		//String confirmedUser = request.getParameter("confirmedUser");
+		//boolean confirmedUser = Boolean.parseBoolean(request.getParameter("confirmedUser")); 
 		//BCrypt.checkpw(candidate, hashedValue);
-		LOGGER.info(String.format("Received mailUser=%s passwordUser=%s ", mailUser, passwordUser));
+		//LOGGER.info(String.format("Received mailUser=%s passwordUser=%s confirmedUser=%s ", mailUser, passwordUser,confirmedUser));
 		/*
 		UserJPA user = 
 				em.createQuery("SELECT u FROM UserJPA u WHERE u.mailUser = :mailUser AND u.passwordUser= :passwordUser", UserJPA.class)
@@ -82,7 +92,8 @@ public class LoginServlet extends HttpServlet {
 					.setParameter("mailUser", mailUser).setParameter("passwordUser",passwordUser).getSingleResult();
 					LOGGER.info(String.format("Received User=%s", user));
 					//BCrypt.checkpw(mailUser, passwordUser);
-					if(user!=null){
+					if((user!=null)){
+						
 						LOGGER.info(String.format("Login Servlet user is not null"));
 						HttpSession mysession = request.getSession(false);
 						LOGGER.info(String.format("Session avant verification"));

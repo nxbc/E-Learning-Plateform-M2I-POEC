@@ -38,7 +38,7 @@ public class UserJPA {
 	private String passwordUser;
 	
 	@Column(name="confirmed_user")
-	private boolean confirmedUser = false;
+	private boolean confirmedUser;
 	
 	@Column(name="confirmed_key_user")
 	private String confirmedKeyUser;
