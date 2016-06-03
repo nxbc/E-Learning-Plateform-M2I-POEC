@@ -40,9 +40,6 @@ public class CourseFormServlet extends HttpServlet {
 	private static final Logger LOGGER = Logger.getLogger(CourseFormServlet.class.getName());
 	private static final String URL_HOME = "http://localhost:8080/elearn-webapp-0.1/welcome";
 	
-	JSONParser jsonParser = new JSONParser();
-	JSONObject jsonObject = new JSONObject();
-	
 	@PersistenceUnit(unitName = "ELearningPU")
 	private EntityManagerFactory emf;
 
@@ -52,7 +49,6 @@ public class CourseFormServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.getWriter().append("Served at: Elearning ").append(request.getContextPath());
 		request.getRequestDispatcher("/WEB-INF/form_course.jsp").forward(request, response);
-		LOGGER.info(String.format("Ya qq1 dans le Log"));
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -127,6 +123,8 @@ public class CourseFormServlet extends HttpServlet {
 		}
 		
 		
+		JSONParser jsonParser = new JSONParser();
+		JSONObject jsonObject = new JSONObject();
 		JSONArray chap = (JSONArray) jsonObject.get("chapters");
 		Iterator<String> iterator = chap.iterator();
 		while (iterator.hasNext()) {

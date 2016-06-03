@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 
 
 
@@ -39,20 +41,20 @@ public class LoginServlet extends HttpServlet {
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		String mailUser = request.getParameter("mailUser");
-		String passwordUser = request.getParameter("passwordUser");
-		boolean confirmedUser = Boolean.parseBoolean(request.getParameter("confirmedUser")); 
-		
-		UserJPA user = usersService.findWithMail(mailUser);
-		
-		LOGGER.info(String.format("Found %s user", user));
-
-		EntityManager em = emf.createEntityManager();
-		UserJPA userjpa = 
-				em.createQuery("SELECT confirmedUser FROM UserJPA WHERE confirmedUser.mailUser = :mailUser AND confirmedUser.passwordUser= :passwordUser", UserJPA.class)
-				.setParameter("mailUser", mailUser).setParameter("passwordUser",passwordUser).getSingleResult();
-				LOGGER.info(String.format("Received User = %s", userjpa));
-				LOGGER.info(String.format("Received mailUser=%s passwordUser=%s confirmedUser=%s ", mailUser, passwordUser,confirmedUser));
+//		String mailUser = request.getParameter("mailUser");
+//		String passwordUser = request.getParameter("passwordUser");
+//		boolean confirmedUser = Boolean.parseBoolean(request.getParameter("confirmedUser")); 
+//		
+//		UserJPA user = usersService.findWithMail(mailUser);
+//		
+//		LOGGER.info(String.format("Found %s user", user));
+//
+//		EntityManager em = emf.createEntityManager();
+//		UserJPA userjpa = 
+//				em.createQuery("SELECT confirmedUser FROM UserJPA WHERE confirmedUser.mailUser = :mailUser AND confirmedUser.passwordUser= :passwordUser", UserJPA.class)
+//				.setParameter("mailUser", mailUser).setParameter("passwordUser",passwordUser).getSingleResult();
+//				LOGGER.info(String.format("Received User = %s", userjpa));
+//				LOGGER.info(String.format("Received mailUser=%s passwordUser=%s confirmedUser=%s ", mailUser, passwordUser,confirmedUser));
 		request.getRequestDispatcher("/WEB-INF/ConnectionForm.jsp")
 				.forward(request, response);
 	}
@@ -69,9 +71,9 @@ public class LoginServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		EntityManager em = emf.createEntityManager();
+		UserJPA user = null;
 		
-		String mailUser = request.getParameter("mailUser");
-		
+		String mailUser = "F"+request.getParameter("mailUser");
 		String passwordUser = request.getParameter("passwordUser");	
 		
 		//boolean confirmedUser = Boolean.valueOf("confirmedUser");
@@ -87,13 +89,15 @@ public class LoginServlet extends HttpServlet {
 		LOGGER.info(String.format("Received User=%s", user));
 		*/
 		try{	
-			UserJPA user = 
-					em.createQuery("SELECT u FROM UserJPA u WHERE u.mailUser = :mailUser AND u.passwordUser= :passwordUser", UserJPA.class)
-					.setParameter("mailUser", mailUser).setParameter("passwordUser",passwordUser).getSingleResult();
+			user = 
+					em.createQuery("SELECT u FROM UserJPA u WHERE u.mailUser = :mailUser", UserJPA.class).setParameter("mailUser", mailUser).getSingleResult();
 					LOGGER.info(String.format("Received User=%s", user));
-					//BCrypt.checkpw(mailUser, passwordUser);
-					if((user!=null)){
-						
+					
+					LOGGER.info(String.format("Le pass clair = %s", passwordUser));
+					LOGGER.info(String.format("Le pass crypté = %s", user.getPasswordUser()));
+					
+					if(BCrypt.checkpw(passwordUser, user.getPasswordUser())){
+
 						LOGGER.info(String.format("Login Servlet user is not null"));
 						HttpSession mysession = request.getSession(false);
 						LOGGER.info(String.format("Session avant verification"));
@@ -105,10 +109,10 @@ public class LoginServlet extends HttpServlet {
 						}
 						LOGGER.info(String.format("avant set attribut"));
 						mysession.setAttribute("userMail", mailUser);
-						LOGGER.info(String.format("apreès set attribut : %s ", mysession.getAttribute("userMail")));
+						LOGGER.info(String.format("après set attribut : %s ", mysession.getAttribute("userMail")));
 						
 						/* Récupération de l'objet depuis la session */
-						mysession.getAttribute( "userMail" );
+						mysession.getAttribute("userMail");
 						
 						//request.setAttribute("session",mysession);
 					//	request.getRequestDispatcher("/WEB-INF/formateurwelcomepage.jsp").forward(request, response);
@@ -119,9 +123,10 @@ public class LoginServlet extends HttpServlet {
 					}
 					
 			}catch(NoResultException e){
+				
 				LOGGER.log(Level.INFO, "Problem using ELearningDS", e);
 				request.getRequestDispatcher("/WEB-INF/ConnectionFormResult.jsp").forward(request, response);
-				response.sendError(500, "Veuillez entrer le bon mot de passe ou identifiant");
+				response.sendError(500, "Please enter a correct mail or password.");
 				
 				return;
 			}
