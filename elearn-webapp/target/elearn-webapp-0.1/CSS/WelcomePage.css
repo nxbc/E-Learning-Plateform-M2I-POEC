@@ -1,0 +1,15 @@
+@CHARSET "ISO-8859-1";
+
+#Loggin {
+	text-align:right;
+	border-bottom:1px solid gray;
+}
+
+.id{
+	text-align:left;
+}
+
+.image {
+	width:400px;
+	heigth:400px;
+}
